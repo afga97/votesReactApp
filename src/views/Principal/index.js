@@ -4,7 +4,11 @@ import DetailUser from '../../components/user/DetailUser'
 import FormVote from '../../components/user/FormVote'
 import ListUser from '../../components/user/ListUser'
 
-
+const user_logged_simulate = {
+    user: 'Cuenta 1',
+    address: 'cja2asabj',
+    amCandidate: false
+}
 export class Principal extends Component {
 
     constructor(props) {
@@ -15,8 +19,26 @@ export class Principal extends Component {
         this.state = {
             collapse: true,
             fadeIn: true,
-            timeout: 300
+            timeout: 300,
+            user_logged: {},
+            users: []
         };
+    }
+
+    componentDidMount() {
+        const users = localStorage.users ? JSON.parse(localStorage.users) : []
+        const user_logged = localStorage.user ? JSON.parse(localStorage.user) : {}
+        if (Object.entries(user_logged).length === 0) {
+            this.setState({
+                user_logged: { ...user_logged_simulate },
+                users
+            })
+        } else {
+            this.setState({
+                user_logged,
+                users
+            })
+        }
     }
 
     toggle() {
@@ -30,12 +52,12 @@ export class Principal extends Component {
     render() {
         return (
             <div className="animated fadeIn">
-                <h1>Cuenta 1, welcome to the StarkCore voting platform!</h1>
+                <h1>{this.state.user_logged.user}, welcome to the StarkCore voting platform!</h1>
                 <p>Looks like you are VOTER, go ahead and get your candidates address and start to vote. 
                     Remember, your vote is anonymous.</p>
                 <Row>
                     <Col xs="12" sm="6" md="6">
-                        <DetailUser />
+                        <DetailUser {...this.state.user_logged }/>
                     </Col>
                     <Col xs="12" sm="6" md="6">
                         <FormVote />
@@ -43,7 +65,7 @@ export class Principal extends Component {
                 </Row>
                 <Row>
                     <Col md="12">
-                        <ListUser />
+                        <ListUser users={this.state.users}/>
                     </Col>
                 </Row>
             </div>

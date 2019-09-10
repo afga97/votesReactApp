@@ -1,33 +1,75 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
+import UsersData from '../../../UsersData'
 
 class Login extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      address: '',
-      amCandidate: false,
+      user: {
+        user: '',
+        address: '',
+        amCandidate: false,
+      },
+      users: []
     }
+  }
+
+  componentDidMount() {
+    const users = UsersData;
+    localStorage.users = JSON.stringify(users);
+    this.getUsersLocalStorage();
+  }
+
+  getUsersLocalStorage = () => {
+    const users = localStorage.users ? JSON.parse(localStorage.users) : []
+    this.setState({
+      users
+    })
+  }
+
+  refreshUsers = () => {
+    localStorage.users = JSON.stringify(this.state.users)
+  }
+
+  saveUserLogged = (user) => {
+    localStorage.user = JSON.stringify(user)
   }
 
   changeValues = (e) => {
     const { name, value } = e.target
     if (name === 'amCandidate') {
       this.setState({
-        [name] : !this.state.amCandidate
+        user: {
+          ...this.state.user,
+          [name] : !this.state.user.amCandidate
+        }
       })
     }else{
       this.setState({
-        [name] : value
+        user: {
+          ...this.state.user,
+          [name] : value
+        }
       })
     }
   }
 
   logInRegister = () => {
-
+    const users = this.state.users ? this.state.users : []
+    const user_register = this.state.user;
+    let user_filtered = this.state.users.find( user => user.user === user_register.user)
+    if (user_filtered) {
+      this.saveUserLogged({...this.state.user})
+    }else{
+      let obj_user = {...this.state.user}
+      users.push(obj_user)
+      this.refreshUsers()
+      this.saveUserLogged(obj_user)
+    }
+    this.props.history.push('/dashboard')
   }
 
   render() {
@@ -60,7 +102,7 @@ class Login extends Component {
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">Register and continue</Button>
+                          <Button type="button" onClick={ this.logInRegister } color="primary" className="px-4">Register and continue</Button>
                         </Col>
                       </Row>
                     </Form>

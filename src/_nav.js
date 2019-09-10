@@ -10,6 +10,14 @@ export default {
       },
     },
     {
+      name: 'Results',
+      url: '/results',
+      icon: 'icon-pie-chart',
+      badge: {
+        variant: 'info',
+      },
+    },
+    {
       name: 'Dashboard',
       url: '/dashboardtwo',
       icon: 'icon-speedometer',

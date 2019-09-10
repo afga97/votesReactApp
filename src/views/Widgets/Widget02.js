@@ -28,7 +28,7 @@ const defaultProps = {
 
 class Widget02 extends Component {
   render() {
-    const { className, cssModule, header, mainText, icon, color, footer, link, children, variant, ...attributes } = this.props;
+    const { className, cssModule, header, smallText, mainText, icon, color, footer, link, children, type_text, variant, class_small, ...attributes } = this.props;
 
     // demo purposes only
     const padding = (variant === '0' ? { card: 'p-3', icon: 'p-3', lead: 'mt-2' } : (variant === '1' ? {
@@ -62,7 +62,8 @@ class Widget02 extends Component {
         <CardBody className={card.classes} {...attributes}>
           {blockIcon(card.icon)}
           <div className={lead.classes}>{header}</div>
-          <div className="text-muted text-uppercase font-weight-bold font-xs">{mainText}</div>
+          <div className={`text-muted ${type_text} font-xs`}>{mainText}</div>
+          <small className={`text-muted ${class_small}`}>{smallText}</small>
         </CardBody>
         {cardFooter()}
       </Card>
