@@ -52,7 +52,7 @@ export class Principal extends Component {
     render() {
         return (
             <div className="animated fadeIn">
-                <h1>{this.state.user_logged.user}, welcome to the StarkCore voting platform!</h1>
+                <h1>{this.state.user_logged.name}, welcome to the StarkCore voting platform!</h1>
                 <p>Looks like you are VOTER, go ahead and get your candidates address and start to vote. 
                     Remember, your vote is anonymous.</p>
                 <Row>

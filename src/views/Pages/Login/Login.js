@@ -9,9 +9,11 @@ class Login extends Component {
     super(props);
     this.state = {
       user: {
-        user: '',
+        name: '',
         address: '',
         amCandidate: false,
+        users_voters: [],
+        votes: 0
       },
       users: []
     }
@@ -60,14 +62,14 @@ class Login extends Component {
   logInRegister = () => {
     const users = this.state.users ? this.state.users : []
     const user_register = this.state.user;
-    let user_filtered = this.state.users.find( user => user.user === user_register.user)
+    let user_filtered = this.state.users.find( user => user.name === user_register.name)
     if (user_filtered) {
       this.saveUserLogged({...this.state.user})
     }else{
       let obj_user = {...this.state.user}
       users.push(obj_user)
-      this.refreshUsers()
       this.saveUserLogged(obj_user)
+      this.refreshUsers()
     }
     this.props.history.push('/dashboard')
   }
@@ -90,7 +92,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" name="user" placeholder="Full name" autoComplete="Full name" onChange={this.changeValues}/>
+                        <Input type="text" name="name" placeholder="Full name" autoComplete="Full name" onChange={this.changeValues}/>
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">

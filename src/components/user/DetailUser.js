@@ -14,14 +14,14 @@ const DetailUser = (props) => {
                     <Row>
                         <Col xs="12" sm="12" lg="12">
                             <h2>Your information</h2>
-                            <Widget02 header={props.user} type_text="text-lowercase font-weight-bold" mainText={amCandidate} icon="fa fa-user" color="primary" variant="1" />
+                            <Widget02 header={props.name} type_text="text-lowercase font-weight-bold" mainText={amCandidate} icon="fa fa-user" color="primary" variant="1" />
                         </Col>
                     </Row>
                     <Row>
                         <Col md="12">
                             <FormGroup>
                                 <Label htmlFor="name">Name</Label>
-                                <Input type="text" id="name" placeholder={props.user} disabled />
+                                <Input type="text" id="name" placeholder={props.name} disabled />
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="address">Address</Label>
