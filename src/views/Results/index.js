@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Row, Col } from 'reactstrap'
 import Candidates from '../../components/votes/Candidates'
 import ResultsCandidates from '../../components/votes/Results'
@@ -24,7 +24,7 @@ export class Results extends Component {
 
     render() {
         return (
-            <Fragment>
+            <div className="animated fadeIn">
                 <Row>
                     <Col md="12" xs="12" lg="12">
                         <h1>Election Results</h1>
@@ -44,7 +44,7 @@ export class Results extends Component {
                         <Winner users={ this.state.users }/>
                     </Col>
                 </Row>
-            </Fragment>
+            </div>
         )
     }
 }
