@@ -3,8 +3,8 @@ import { Card, CardHeader, CardBody, Table, Badge } from 'reactstrap';
 
 
 const RowsCandidates = (props) => {
-    const getBadge = (status) => {
-        return status ? 'success' : 'danger'
+    const getBadge = (profile) => {
+        return profile === 'Boring president' ? 'danger' : 'success'
     }
     
     return !props.users ? <tr><td colSpan="4" className="text-center">No results found</td></tr> :
@@ -13,7 +13,7 @@ const RowsCandidates = (props) => {
                 <td>{e.name}</td>
                 <td>{e.address}</td>
                 <td>{e.users_voters.length}</td>
-                <td><Badge color={getBadge(true)}> Comunista </Badge></td>
+                <td><Badge color={getBadge(e.profile)}>{ e.profile }</Badge></td>
             </tr>
         ))
 }

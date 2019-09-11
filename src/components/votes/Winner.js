@@ -4,9 +4,9 @@ import Widget02 from '../../views/Widgets/Widget02';
 
 const Winner = (props) => {
     const users = props.users ? props.users : []
-    var winner = {}
+    var candidaeWinner = {}
     if (users.length > 0) {
-        winner = users.reduce( (winner, user) => {
+        candidaeWinner = users.reduce( (winner, user) => {
             if (winner) {
                 return winner.users_voters.length > user.users_voters.length ? winner : user
             } else {
@@ -14,7 +14,19 @@ const Winner = (props) => {
             }
         })
     }
-    
+    let is_draw = false;
+    if (Object.keys(candidaeWinner).length > 0){
+        let votesWinner = candidaeWinner.users_voters.length
+        for (let user of users) {
+            if (user.id !== candidaeWinner.id){
+                if ( Number(user.users_voters.length) === votesWinner) {
+                    is_draw = true;
+                }
+            }
+        }
+        
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -26,13 +38,23 @@ const Winner = (props) => {
             <CardBody>
                 <Row>
                     <Col md="12" xs="12">
+                    { !is_draw ? 
                         <Widget02 
-                            header={ winner ? winner.name : 'Ninguno' } 
+                            header={ candidaeWinner ? candidaeWinner.name : 'Ninguno' } 
                             type_text="text-uppercase" 
-                            mainText={ winner ? winner.address : 'No disponible' } 
+                            mainText={ candidaeWinner ? candidaeWinner.address : 'No disponible' } 
                             smallText="presidente" 
                             class_small="text-uppercase font-weight-bold"
                             icon="fa fa-user" color="primary" variant="1" />
+                        :
+                        <Widget02 
+                            header="Draw"
+                            type_text="text-uppercase" 
+                            mainText="" 
+                            smallText="presidente" 
+                            class_small="text-uppercase font-weight-bold"
+                            icon="fa fa-user" color="primary" variant="1" />
+                    }
                     </Col>
                 </Row>
             </CardBody>

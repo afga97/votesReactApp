@@ -21,12 +21,11 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    const users = UsersData;
-    if (localStorage.users) {
-      this.getUsersLocalStorage();
-    } else {
+    if (!localStorage.users) {
+      const users = UsersData;
       localStorage.users = JSON.stringify(users);
     }
+    this.getUsersLocalStorage();
   }
 
   getUsersLocalStorage = () => {
@@ -64,6 +63,16 @@ class Login extends Component {
   }
 
   async logInRegister(){
+    const profiles = ['Boring president', 'Dictador']
+    
+    const getProfile = () => {
+      return profiles[Math.floor(Math.random() * profiles.length)]
+    }
+
+    const newAddress = () => {
+      return Math.random().toString(23).substring(5)
+    }
+
     const users = this.state.users ? this.state.users : []
     const user_register = this.state.user;
     let user_filtered = this.state.users.find( user => user.name === user_register.name && user.address === user_register.address && user.amCandidate === user_register.amCandidate)
@@ -71,14 +80,18 @@ class Login extends Component {
       this.saveUserLogged({ ...user_filtered })
     }else{
       const address_equal = this.state.users.find( user => user.address === user_register.address)
-      if (address_equal) {
-        let new_address = Math.random().toString(23).substring(5);
-        await this.setState({
-          user: { ...this.state.user, address: new_address }
-        })
-      } 
-      let obj_user = { id: this.state.users.length + 1, ...this.state.user }
+      let obj_user = { 
+        id: this.state.users.length + 1,
+        name: this.state.user.name,
+        address: address_equal ? newAddress() : this.state.user.address,
+        amCandidate: this.state.user.amCandidate,
+        profile: this.state.user.amCandidate ? getProfile() : '',
+        users_voters: []
+      }
       users.push(obj_user)
+      await this.setState({
+        users
+      })
       this.saveUserLogged(obj_user)
       this.refreshUsers()
     }
