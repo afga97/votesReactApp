@@ -15,7 +15,6 @@ class Login extends Component {
         address: '',
         amCandidate: false,
         users_voters: [],
-        votes: 0
       },
       users: []
     }
