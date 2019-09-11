@@ -2,30 +2,29 @@ import React from 'react'
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import { Doughnut } from 'react-chartjs-2';
 
-const doughnut = {
-    labels: [
-        'Red',
-        'Green',
-        'Yellow',
-    ],
-    datasets: [
-        {
-            data: [300, 50, 100],
-            backgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56',
-            ],
-            hoverBackgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56',
-            ],
-        }
-    ],
-};
 
 const ResultsCandidates = (props) => {
+    const candidatesData = () => {
+        let names = props.users.map( user => user.name )
+        let values = props.users.map( user => user.users_voters.length )
+        
+        return {
+            labels: names,
+            datasets: [
+                {
+                    data: values,
+                    backgroundColor: [
+                        '#FF6384',
+                        '#36A2EB'
+                    ],
+                    hoverBackgroundColor: [
+                        '#FF6384',
+                        '#36A2EB'
+                    ],
+                }
+            ]
+        }
+    }
     return (
         <Card>
             <CardHeader>
@@ -38,7 +37,7 @@ const ResultsCandidates = (props) => {
             </CardHeader>
             <CardBody>
                 <div className="chart-wrapper">
-                    <Doughnut data={doughnut} />
+                    <Doughnut data={candidatesData} />
                 </div>
             </CardBody>
         </Card>

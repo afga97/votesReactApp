@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardHeader, CardBody, Row, Col, FormGroup, Label, Input, Button } from 'reactstrap';
 
-const FormVote = () => {
+const FormVote = (props) => {
     return (
         <Card>
             <CardHeader>
@@ -13,14 +13,21 @@ const FormVote = () => {
                         <h2>Your candidate</h2>
                         <FormGroup>
                             <Label htmlFor="address">Candidate Address</Label>
-                            <Input type="text" id="address" placeholder="0x123..." />
+                            <Input type="text" 
+                                name="address" 
+                                value={props.address}
+                                placeholder="0x123..."
+                                onChange={ (e) => props.onChangeAddress(e) }
+                            />
                         </FormGroup>
                     </Col>
                 </Row>
                 <Row>
                     <Col md="4">
                         <FormGroup>
-                            <Button block color="primary" size="md">Save</Button>
+                            <Button type="button" block color="primary" size="md"
+                                onClick={ () => props.votedCandidate() }
+                            >Save</Button>
                         </FormGroup>
                     </Col>
                 </Row>

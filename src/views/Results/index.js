@@ -6,6 +6,22 @@ import Winner from '../../components/votes/Winner'
 
 
 export class Results extends Component {
+
+    constructor(props){
+        super(props)
+        this.state = {
+            users: []
+        }
+    }
+
+    componentDidMount(){
+        const users = localStorage.users ? JSON.parse(localStorage.users) : []
+        const users_candidates = users.filter( user => user.amCandidate === true)
+        this.setState({
+            users: users_candidates
+        })
+    }
+
     render() {
         return (
             <Fragment>
@@ -17,15 +33,15 @@ export class Results extends Component {
                 </Row>
                 <Row>
                     <Col md="12" xs="12" lg="12">
-                        <Candidates />
+                        <Candidates users={ this.state.users }/>
                     </Col>
                 </Row>
                 <Row>
                     <Col md="6" xs="12">
-                        <ResultsCandidates />
+                        <ResultsCandidates users={ this.state.users }/>
                     </Col>
                     <Col md="6" xs="12">
-                        <Winner />
+                        <Winner users={ this.state.users }/>
                     </Col>
                 </Row>
             </Fragment>

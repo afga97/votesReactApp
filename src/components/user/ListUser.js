@@ -2,8 +2,10 @@ import React from 'react';
 import { Card, CardHeader, CardBody, Table, Badge } from 'reactstrap';
 
 const RowsUser = (props) => {
-    const getBadge = (status) => {
-        return status ? 'success' : 'danger'
+    let user_logged = props.user_logged.id
+
+    const getBadge = (votes, user_logged) => {
+        return votes.includes(user_logged) ? 'success' : 'danger'
     }
     
     return !props.users ? <tr><td colSpan="4" className="text-center">No results found</td></tr> :
@@ -11,8 +13,8 @@ const RowsUser = (props) => {
             <tr key={i}>
                 <td>{e.name}</td>
                 <td>{e.address}</td>
-                <td>{e.amCandidate ? 'true': 'false'}</td>
-                <td><Badge color={getBadge(e.amCandidate)}>New</Badge></td>
+                <td>{e.amCandidate ? 'true': 'false'} </td>
+                <td><Badge color={getBadge(e.users_voters, user_logged)}> {e.users_voters.includes(user_logged) ? 'Voted' : 'No voted' } </Badge></td>
             </tr>
         ))
 }
@@ -34,7 +36,7 @@ const ListUser = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        <RowsUser users={props.users} />
+                        <RowsUser users={props.users} user_logged={props.user_logged}/>
                     </tbody>
                 </Table>
             </CardBody>

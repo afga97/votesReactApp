@@ -7,6 +7,8 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
+
+    this.logInRegister = this.logInRegister.bind(this)
     this.state = {
       user: {
         name: '',
@@ -21,8 +23,11 @@ class Login extends Component {
 
   componentDidMount() {
     const users = UsersData;
-    localStorage.users = JSON.stringify(users);
-    this.getUsersLocalStorage();
+    if (localStorage.users) {
+      this.getUsersLocalStorage();
+    } else {
+      localStorage.users = JSON.stringify(users);
+    }
   }
 
   getUsersLocalStorage = () => {
@@ -59,14 +64,21 @@ class Login extends Component {
     }
   }
 
-  logInRegister = () => {
+  async logInRegister(){
     const users = this.state.users ? this.state.users : []
     const user_register = this.state.user;
-    let user_filtered = this.state.users.find( user => user.name === user_register.name)
+    let user_filtered = this.state.users.find( user => user.name === user_register.name && user.address === user_register.address && user.amCandidate === user_register.amCandidate)
     if (user_filtered) {
-      this.saveUserLogged({...this.state.user})
+      this.saveUserLogged({ ...user_filtered })
     }else{
-      let obj_user = {...this.state.user}
+      const address_equal = this.state.users.find( user => user.address === user_register.address)
+      if (address_equal) {
+        let new_address = Math.random().toString(23).substring(5);
+        await this.setState({
+          user: { ...this.state.user, address: new_address }
+        })
+      } 
+      let obj_user = { id: this.state.users.length + 1, ...this.state.user }
       users.push(obj_user)
       this.saveUserLogged(obj_user)
       this.refreshUsers()
@@ -104,7 +116,7 @@ class Login extends Component {
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button type="button" onClick={ this.logInRegister } color="primary" className="px-4">Register and continue</Button>
+                          <Button type="button" onClick={ this.logInRegister.bind(this) } color="primary" className="px-4">Register and continue</Button>
                         </Col>
                       </Row>
                     </Form>
