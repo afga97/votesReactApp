@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {ToastsContainer, ToastsStore, ToastsContainerPosition } from 'react-toasts';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { AppSwitch } from '@coreui/react'
 import UsersData from '../../../UsersData'
@@ -62,46 +63,63 @@ class Login extends Component {
     }
   }
 
+  validLogin = () => {
+    let is_valid = true
+    if (!this.state.user.name && !this.state.user.address) {
+      is_valid = false
+    }else if(!this.state.user.name && this.state.user.address) {
+      is_valid = false
+    }else if (!this.state.user.address && this.state.user.name ) {
+      is_valid = false
+    }
+    return is_valid
+  }
+
   async logInRegister(){
-    const profiles = ['Boring president', 'Dictador']
-    
-    const getProfile = () => {
-      return profiles[Math.floor(Math.random() * profiles.length)]
-    }
-
-    const newAddress = () => {
-      return Math.random().toString(23).substring(5)
-    }
-
-    const users = this.state.users ? this.state.users : []
-    const user_register = this.state.user;
-    let user_filtered = this.state.users.find( user => user.name === user_register.name && user.address === user_register.address && user.amCandidate === user_register.amCandidate)
-    if (user_filtered) {
-      this.saveUserLogged({ ...user_filtered })
-    }else{
-      const address_equal = this.state.users.find( user => user.address === user_register.address)
-      let obj_user = { 
-        id: this.state.users.length + 1,
-        name: this.state.user.name,
-        address: address_equal ? newAddress() : this.state.user.address,
-        amCandidate: this.state.user.amCandidate,
-        profile: this.state.user.amCandidate ? getProfile() : '',
-        users_voters: []
+    if (!this.validLogin()) {
+      ToastsStore.error("Verifica que el nombre y la dirección esten diligenciados correctamente")
+    } else {
+      const profiles = ['Boring president', 'Dictador']
+      
+      const getProfile = () => {
+        return profiles[Math.floor(Math.random() * profiles.length)]
       }
-      users.push(obj_user)
-      await this.setState({
-        users
-      })
-      this.saveUserLogged(obj_user)
-      this.refreshUsers()
+
+      const newAddress = () => {
+        return Math.random().toString(23).substring(5)
+      }
+
+      const users = this.state.users ? this.state.users : []
+      const user_register = this.state.user;
+      let user_filtered = this.state.users.find( user => user.name === user_register.name && user.address === user_register.address && user.amCandidate === user_register.amCandidate)
+      if (user_filtered) {
+        this.saveUserLogged({ ...user_filtered })
+      }else{
+        const address_equal = this.state.users.find( user => user.address === user_register.address)
+        let obj_user = { 
+          id: this.state.users.length + 1,
+          name: this.state.user.name,
+          address: address_equal ? newAddress() : this.state.user.address,
+          amCandidate: this.state.user.amCandidate,
+          profile: this.state.user.amCandidate ? getProfile() : '',
+          users_voters: []
+        }
+        users.push(obj_user)
+        await this.setState({
+          users
+        })
+        this.saveUserLogged(obj_user)
+        this.refreshUsers()
+      }
+      this.props.history.push('/dashboard')
     }
-    this.props.history.push('/dashboard')
   }
 
   render() {
     return (
       <div className="app flex-row align-items-center">
         <Container>
+          <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_RIGHT}/>
           <Row className="justify-content-center">
             <Col md="8">
               <CardGroup>
