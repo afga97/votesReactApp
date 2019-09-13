@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {ToastsContainer, ToastsStore, ToastsContainerPosition } from 'react-toasts'
 import { Col, Row } from 'reactstrap'
 import DetailUser from '../../components/user/DetailUser'
 import FormVote from '../../components/user/FormVote'
@@ -53,14 +54,15 @@ export class Principal extends Component {
     votedCandidate = () => { 
         const user_finded = this.state.users.find( user => user.address === this.state.address )
         if (!user_finded) {
-            console.log('No se encontro un usuario con esta address')
+            ToastsStore.error("No se encontro un usuario con esta dirección")
         } else {
             if (!user_finded.amCandidate) {
-                console.log('No puede votar por una persona que no es candidata')
+                ToastsStore.error("No puede votar por una persona que no es candidata")
             } else if (user_finded.users_voters.includes(this.state.user_logged.id)){
-                console.log('Ya has votado por esta persona')
+                ToastsStore.error("Ya has votado por esta persona")
             } else {
                 this.setState({ address: '' }, () => {
+                    ToastsStore.success("Se  ha registrado tu voto correctamente")
                     user_finded.users_voters.push(this.state.user_logged.id)
                     this.refreshUsers();
                     this.getUsersLocalStorage();
@@ -79,6 +81,7 @@ export class Principal extends Component {
     render() {
         return (
             <div className="animated fadeIn">
+                <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_RIGHT}/>
                 <h1>{this.state.user_logged.name}, welcome to the StarkCore voting platform!</h1>
                 <p>Looks like you are VOTER, go ahead and get your candidates address and start to vote. 
                     Remember, your vote is anonymous.</p>
